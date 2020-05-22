@@ -1,6 +1,7 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import widget
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
@@ -59,6 +60,16 @@ def update(id):
 
     else:
         return render_template('update.html', task=task)
+
+@app.route('/timer/<int:id>')
+def timer():
+    task_timer = Todo.get_or_404(id)
+
+    try:
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'There was an issue updating the task'
 
 
 if __name__ == "__main__":
